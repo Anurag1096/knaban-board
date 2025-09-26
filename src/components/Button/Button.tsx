@@ -1,14 +1,19 @@
-import Styles from "@/components/Button/Button.module.css"
+"use client";
+import Styles from "@/components/Button/Button.module.css";
 
-interface ButtonState{
-    name:string;
+interface ButtonState extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+  variant?: "primary" | "secondary"| "error";
 }
 
-export const ButtonPrimary=({name}:ButtonState)=>{
-    return (<button className={Styles["btn--primary"]}>{name}</button>)
-}
-
-
-export const ButtonSecondary=({name}:ButtonState)=>{
-    return(<button className={Styles["btn--secondary"]}>{name}</button>)
-}
+export const Button = ({
+  children,
+  variant = "primary",
+  ...props
+}: ButtonState) => {
+  return (
+    <button type="button" className={Styles[`btn--${variant}`]} {...props}>
+      {children}
+    </button>
+  );
+};

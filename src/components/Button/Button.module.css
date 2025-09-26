@@ -1,11 +1,19 @@
-btn--primary,
-btn--secondary {
+.btn--primary,
+.btn--secondary {
     padding:0.5rem;
     color:white;
+    border:none;
+    border-radius:0.5rem;
+    cursor:pointer;
 }
-btn--primary{
-    background:red;
+
+.btn--primary:hover {
+  background: rgba(24,24,27,1);
+  transform: scale(1.1);
 }
-btn--secondary{
+.btn--primary{
+    background:#fff1;
+}
+.btn--secondary{
     background:blue;
 }
