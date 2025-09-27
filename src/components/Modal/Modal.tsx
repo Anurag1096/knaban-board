@@ -14,8 +14,8 @@ const Modal = ({ children, isOpen, onClose }: ModalState) => {
     const handleEscPress = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
-    document.addEventListener("keypress", handleEscPress);
-    return () => document.removeEventListener("keypress", handleEscPress);
+    document.addEventListener("keydown", handleEscPress);
+    return () => document.removeEventListener("keydown", handleEscPress);
   }, [onClose]);
 
   if (!isOpen) return null;
