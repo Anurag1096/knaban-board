@@ -1,12 +1,12 @@
 interface TextState {
-  text: string;
-  handleInput: (e: React.FormEvent<HTMLDivElement>) => void;
+  text?: string;// will be a react state;
+  handleInput?: (e: React.FormEvent<HTMLDivElement>) => void;
   styleobj?: React.CSSProperties;
 }
 
 const TextEditable = ({
-  text,
-  handleInput,
+  text="Add text",
+  handleInput =()=> alert("Will run when you edit "),
   styleobj = {
     padding: "8px",
     border: "1px solid gray",

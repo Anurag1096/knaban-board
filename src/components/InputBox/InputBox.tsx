@@ -1,6 +1,6 @@
 import Styles from "@/components/InputBox/InputBox.module.css";
 
-interface InputBoxState {
+interface InputBoxState extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: "text" | "textarea" | "email" | "password" | "search" | "number";
   inputName: string;
   disabled?: boolean;

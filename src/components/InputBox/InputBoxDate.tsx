@@ -1,6 +1,6 @@
 import Styles from "@/components/InputBox/InputBoxDate.module.css";
 
-interface InputBoxDateState {
+interface InputBoxDateState extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   id?: string;
   min?: string;
