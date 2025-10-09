@@ -7,12 +7,14 @@ interface DropdownProps {
   name: string;
   linkArray?: DropdownLink[];
 }
-
+// -------------------------------------------------------------------------
 const DropdownMenu = ({ name, linkArray = [] }: DropdownProps) => {
+  // -------------------------------------------------------------------------
   return (
     <div className={Styles.dropDown}>
       <button className={Styles.dropBtn}>{name}</button>
       <div className={Styles.dropContent}>
+        {/* ----- Array Looping-------- */}
         {linkArray.map((item) => {
           return (
             <a key={item.label} href={item.href}>
