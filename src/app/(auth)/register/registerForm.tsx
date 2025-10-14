@@ -8,7 +8,7 @@ export default function LoginForm() {
       action={registerAction}
       className="bg-white p-6 rounded-2xl shadow-md w-full max-w-sm space-y-4"
     >
-      <h1 className="text-2xl font-semibold text-center">Login</h1>
+      <h1 className="text-2xl font-semibold text-center">Register</h1>
 
       <div className="flex flex-col">
         <label>Email</label>
