@@ -1,14 +1,15 @@
 "use client";
-
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import ForgotPassword from "./ForgotPassword";
 import VerifyPasscode from "./VerifyPasscode";
+import NewPassword from "./NewPassword";
 export default function ResetPage() {
-  const router = useRouter();
+  const router=useRouter()
   const [resetFlowPoint, setResetFlow] = useState<number>(0);
   const [email, setEmail] = useState<string>("");
   const [code, setCode] = useState<number>();
+  const [newPassword, setNewPass] = useState<string>("");
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -23,6 +24,14 @@ export default function ResetPage() {
   const handlePasscodeSubmit = () => {
     setResetFlow(2);
   };
+  function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setNewPass(e.target.value);
+  }
+  function handlePasswordSubmit(){
+    //submit login
+    setTimeout(()=>{router.push('/login')},2000)
+
+  }
 
   if (resetFlowPoint == 1) {
     return (
@@ -36,15 +45,11 @@ export default function ResetPage() {
 
   if (resetFlowPoint == 2) {
     return (
-      <main>
-        <span>Final point</span>
-        <button
-          className="bg-black cursor-pointer"
-          onClick={() => router.push("/login")}
-        >
-          Save
-        </button>
-      </main>
+      <NewPassword
+        newPassword={newPassword}
+        handlePasswordChange={handlePasswordChange}
+        handlePasswordSubmit={handlePasswordSubmit}
+      />
     );
   }
 
