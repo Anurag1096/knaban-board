@@ -5,11 +5,15 @@ import ForgotPassword from "./ForgotPassword";
 import VerifyPasscode from "./VerifyPasscode";
 import NewPassword from "./NewPassword";
 export default function ResetPage() {
-  const router=useRouter()
+  const router = useRouter();
   const [resetFlowPoint, setResetFlow] = useState<number>(0);
   const [email, setEmail] = useState<string>("");
   const [code, setCode] = useState<number>();
   const [newPassword, setNewPass] = useState<string>("");
+
+  //-------------Email Check funtions-----------------------
+
+
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -17,6 +21,8 @@ export default function ResetPage() {
     setResetFlow(1);
   };
 
+
+  //------------ Verify Passcode functions--------------------
   const handlePasscodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCode(Number(e.target.value));
   };
@@ -24,14 +30,22 @@ export default function ResetPage() {
   const handlePasscodeSubmit = () => {
     setResetFlow(2);
   };
+
+
+  //-------------New Password functions---------------------
   function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
     setNewPass(e.target.value);
   }
-  function handlePasswordSubmit(){
-    //submit login
-    setTimeout(()=>{router.push('/login')},2000)
 
+  function handlePasswordSubmit() {
+    //submit login
+    
+      router.push("/login");
+    
   }
+
+
+
 
   if (resetFlowPoint == 1) {
     return (
@@ -46,7 +60,7 @@ export default function ResetPage() {
   if (resetFlowPoint == 2) {
     return (
       <NewPassword
-        newPassword={newPassword}
+        newPass={newPassword}
         handlePasswordChange={handlePasswordChange}
         handlePasswordSubmit={handlePasswordSubmit}
       />

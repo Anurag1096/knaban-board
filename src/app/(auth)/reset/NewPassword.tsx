@@ -54,7 +54,9 @@ const NewPassword = ({
 
           />
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit"
+        className="w-full  bg-gray-100 border-1 border-blue-100 text-black py-2 rounded-lg hover:bg-gray-300 cursor-pointer"
+        >Submit</button>
       </form>
     </main>
   );
