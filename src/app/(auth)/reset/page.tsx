@@ -37,9 +37,9 @@ export default function ResetPage() {
     setNewPass(e.target.value);
   }
 
-  function handlePasswordSubmit() {
+  function handlePasswordSubmit(e:React.FormEvent<SubmitEvent>) {
     //submit login
-    
+    e.preventDefault()
       router.push("/login");
     
   }
