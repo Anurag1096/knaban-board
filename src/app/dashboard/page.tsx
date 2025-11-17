@@ -1,7 +1,9 @@
+import Cards from "@/components/Cards/Cards";
+
 export default function DashboardPage() {
   return (
     <div>
-      <h1>Dashboard Home</h1>
+      <Cards/>
     </div>
   );
 }
