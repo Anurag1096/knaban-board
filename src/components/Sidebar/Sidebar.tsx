@@ -12,14 +12,14 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 p-4 bg-gray-100 dark:bg-gray-900 min-h-screen">
+    <aside className=" p-10 bg-gray-100 dark:bg-gray-900 min-h-screen">
       <nav className="flex flex-col gap-3">
         {links.map((link) => {
           const isActive = pathname === link.href;
 
           return (
             <Link
-              className={isActive ? ` text-amber-400` : ` text-blue-400`}
+              className={isActive ? ` text-amber-400 text-center scale-125 py-2 hover:bg-amber-100 hover:rounded-xl` : ` text-blue-400 text-center py-0.5 hover:bg-amber-100 hover:rounded-xl`}
               key={link.Name}
               href={link.href}
             >
