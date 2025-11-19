@@ -1,7 +1,7 @@
 interface BoardProps{
     name:string;
 }
-export const CreateBoard=({name}:BoardProps)=>{
+export  function createBoard({name}:BoardProps){
     return{
     id: crypto.randomUUID(),
     name,
