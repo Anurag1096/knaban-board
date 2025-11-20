@@ -1,12 +1,14 @@
-import Cards from "@/components/Cards/Cards";
-import AddBoard from "@/components/CreateBoard/CreateBoard";
+'use client'
+import BoardList from "@/components/CreateBoard/BoardList";
+import { useAppSelector } from "@/data/store/hooks";
+//will contain board List
+// component.
 
 export default function DashboardPage() {
+  const BoardArr=useAppSelector(state=> state.board)
   return (
     <div>
-      <Cards/>
-
-      <AddBoard/>
+      <BoardList Boards={BoardArr} />
     </div>
   );
 }

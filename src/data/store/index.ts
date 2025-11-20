@@ -1,8 +1,9 @@
 "use client";
 import { configureStore} from "@reduxjs/toolkit";
-
+import BoardReducer from './slices/BoardSlice'
 export const store= configureStore({
 reducer:{
+    board:BoardReducer,
 }
 })
 

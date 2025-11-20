@@ -1,3 +1,21 @@
-export default function BoardItems(){
-    return(<div></div>)
+import Link from "next/link";
+
+import { BoardTypes } from "./types/BoardTypes";
+// Now after receiving it's single board compoent it will render  a rectangular box on which when the
+// user will click will be taken to teh board view component which will handle further task.
+interface Props {
+  board: BoardTypes;
+}
+
+export default function BoardItems({ board }: Props) {
+  return (
+    <div className="p-2 bg-amber-200 text-black w-fit m-2">
+      <Link href={`/dashboard/board/${board.id}`}>
+        <div className="board-card">
+          <h3>{board.name}</h3>
+          <p>{board.columns} columns</p>
+        </div>
+      </Link>
+    </div>
+  );
 }
