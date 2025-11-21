@@ -1,11 +1,6 @@
 //need to figure out how avatar list data and comments count should be structure
 // and how to assign work to people.
-interface CardsProps{
-    tagName?:string;
-    headings?:string;
-    discription?:string;
-    
-}
+import { CardsProps } from "./types";
 
 export default function Cards({tagName,headings,discription}:CardsProps) {
   return (

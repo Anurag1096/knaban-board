@@ -1,4 +1,20 @@
+'use client'
+import BoardView from "@/components/CreateBoard/BoardView"
+import { useAppSelector } from "@/data/store/hooks"
+
+
 export default function Home(){
 
-    return(<div>this will contain board view component which will render the board columns</div>)
-}
+const BoardData=useAppSelector(state=>state.column)
+    
+return(<div className="flex justify-between" >
+{BoardData.map((columns)=>{
+        return (
+        <div key={columns.id} className="flex flex-col  ">
+            <div className="text-amber-100 font-extrabold text-3xl">{columns.name}</div>
+            <BoardView columns={columns.columns}/>
+            </div>
+            )
+    })})
+</div>
+)}

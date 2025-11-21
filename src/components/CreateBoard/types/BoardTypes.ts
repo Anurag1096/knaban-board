@@ -1,7 +1,15 @@
+import { CardsProps } from "@/components/Cards/types";
+
+export interface Column{
+    columnId:string;
+   
+    cards:CardsProps[];
+
+}
 export interface Board{
      id:string,
     name:string,
-    columns: [],
+    columns:Column,
     createdAt: string,
 }
 export interface BoardTypes{
