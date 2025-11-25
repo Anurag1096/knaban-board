@@ -2,19 +2,36 @@
 
 import Cards from "../Cards/Cards";
 import { Column } from "./types/BoardTypes";
+import { Draggable } from "@hello-pangea/dnd";
 import { CardsProps } from "../Cards/types";
 export default function BoardView({ columns }: { columns: Column }) {
+ console.log("This is the column table",columns)
+ 
   return (
-    <div className="flex flex-col gap-4" key={columns.columnId}>
-      {columns.cards.map((card: CardsProps) => {
+
+    <div className="flex flex-col gap-4">
+      {columns.cards.map((card: CardsProps,index:number) => {
         return (
-          <Cards
-            key={card.tagName}
-            tagName={card.tagName}
-            headings={card.headings}
-            discription={card.discription}
-            cardId={card.cardId}
-          />
+     <Draggable
+          key={card.cardId}
+          draggableId={card.cardId}
+          index={index}
+        >
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
+              <Cards
+                tagName={card.tagName}
+                headings={card.headings}
+                discription={card.discription}
+                cardId={card.cardId}
+              />
+            </div>
+          )}
+        </Draggable>
         );
       })}
     </div>
