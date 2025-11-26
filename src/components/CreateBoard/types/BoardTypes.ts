@@ -1,7 +1,6 @@
 import { CardsProps } from "@/components/Cards/types";
 
 export interface Column{
-    columnId:string;
    
     cards:CardsProps[];
 

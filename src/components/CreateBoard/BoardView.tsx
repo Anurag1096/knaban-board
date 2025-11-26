@@ -5,7 +5,7 @@ import { Column } from "./types/BoardTypes";
 import { Draggable } from "@hello-pangea/dnd";
 import { CardsProps } from "../Cards/types";
 export default function BoardView({ columns }: { columns: Column }) {
- console.log("This is the column table",columns)
+
  
   return (
 

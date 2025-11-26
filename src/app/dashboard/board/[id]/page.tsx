@@ -1,13 +1,21 @@
 "use client";
 import BoardView from "@/components/CreateBoard/BoardView";
 import { useAppSelector } from "@/data/store/hooks";
-import { DragDropContext, Droppable } from "@hello-pangea/dnd";
+import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 
 export default function Home() {
   const BoardData = useAppSelector((state) => state.column);
+  function onDrag(result: DropResult<string>){
+    if(!result.destination) return;
+    console.log(result)
 
+    if(result.source.droppableId === result.destination.droppableId){
+      
+    }
+
+   }
   return (
-    <DragDropContext onDragEnd={() => console.log("end")}>
+    <DragDropContext onDragEnd={(result) => onDrag(result)}>
       <div className="flex justify-between">
         {BoardData.map((columns) => {
           return (
