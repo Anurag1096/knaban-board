@@ -1,19 +1,33 @@
 "use client";
 import BoardView from "@/components/CreateBoard/BoardView";
-import { useAppSelector } from "@/data/store/hooks";
+import { useAppSelector,useAppDispatch } from "@/data/store/hooks";
+import { dndCard } from "@/data/store/slices/ColumnSlice";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 
 export default function Home() {
+  const dispatch=useAppDispatch()
   const BoardData = useAppSelector((state) => state.column);
-  function onDrag(result: DropResult<string>){
-    if(!result.destination) return;
-    console.log(result)
+  function onDrag(result: DropResult<string>) {
+    if (!result.destination) return;
+  
+    const newData = structuredClone(BoardData);
+    console.log(newData)
+    const sourceColumn = newData.find(
+      (col) => col.id === result.source.droppableId
+    );
+    const draggedCard = sourceColumn?.cards[result.source.index];
+    const destinationColumn=newData.find(
+      (col)=>col.id === result.destination?.droppableId
+    )
 
-    if(result.source.droppableId === result.destination.droppableId){
-      
-    }
+    //now remove it from the source and add it to destination
 
-   }
+    sourceColumn?.cards.splice(result.source.index,1)
+    destinationColumn?.cards.splice(result.destination.index,0,draggedCard)
+    dispatch(dndCard(newData))
+
+
+  }
   return (
     <DragDropContext onDragEnd={(result) => onDrag(result)}>
       <div className="flex justify-between">
@@ -32,7 +46,7 @@ export default function Home() {
                     {...provided.droppableProps}
                     className="flex flex-col gap-2 p-2"
                   >
-                    <BoardView columns={columns.columns}/>
+                    <BoardView cards={columns.cards} />
                     {provided.placeholder}
                   </div>
                 )}

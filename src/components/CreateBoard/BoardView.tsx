@@ -1,16 +1,14 @@
 // this will receive an column array [{},{},{}] which contains object for every task to do.
 
 import Cards from "../Cards/Cards";
-import { Column } from "./types/BoardTypes";
 import { Draggable } from "@hello-pangea/dnd";
 import { CardsProps } from "../Cards/types";
-export default function BoardView({ columns }: { columns: Column }) {
-
- 
+import { Board } from "./types/BoardTypes";
+export default function BoardView({ cards }:{cards:Board}) { 
   return (
 
     <div className="flex flex-col gap-4">
-      {columns.cards.map((card: CardsProps,index:number) => {
+      {cards.map((card: CardsProps,index:number) => {
         return (
      <Draggable
           key={card.cardId}
