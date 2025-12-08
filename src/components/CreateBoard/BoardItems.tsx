@@ -9,13 +9,13 @@ interface Props {
 
 export default function BoardItems({ board }: Props) {
   return (
-    <div className="p-2 bg-amber-200 text-black w-fit m-2">
       <Link href={`/dashboard/board/${board.id}`}>
+    <div className="p-2 bg-white text-black rounded-2xl h-36 m-4 ">
         <div className="board-card">
           <h3>{board.name}</h3>
           <p>{board.columns} columns</p>
         </div>
-      </Link>
     </div>
+      </Link>
   );
 }

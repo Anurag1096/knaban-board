@@ -1,4 +1,6 @@
 "use client";
+import { CardsProps } from "@/components/Cards/types";
+import ColumnName from "@/components/ColumnName/ColumnName";
 import BoardView from "@/components/CreateBoard/BoardView";
 import { useAppSelector,useAppDispatch } from "@/data/store/hooks";
 import { dndCard } from "@/data/store/slices/ColumnSlice";
@@ -30,13 +32,13 @@ export default function Home() {
   }
   return (
     <DragDropContext onDragEnd={(result) => onDrag(result)}>
-      <div className="flex justify-between">
+      <div className="  grid-rows-1 md:grid grid-cols-3 md:gap-5">
         {BoardData.map((columns) => {
           return (
-            <div key={columns.id} className="flex flex-col  ">
-              <div className="text-amber-100 font-extrabold text-3xl">
-                {columns.name}
-              </div>
+            <div key={columns.id} className="flex flex-col mx-10 h-fit  rounded-xl  bg-[#E2E8F0] ">
+              
+                <ColumnName name={columns.name} count={columns.cards.length}/>
+              
 
               {/* Each column MUST be a droppable */}
               <Droppable droppableId={columns.id}>
@@ -44,7 +46,7 @@ export default function Home() {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className="flex flex-col gap-2 p-2"
+                    className="flex flex-col gap-6 p-2"
                   >
                     <BoardView cards={columns.cards} />
                     {provided.placeholder}

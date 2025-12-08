@@ -5,7 +5,7 @@ import { CardsProps } from "./types";
 export default function Cards({tagName,headings,discription}:CardsProps) {
   return (
     <>
-      <div id="container" className="rounded-xl p-4 bg-white max-w-80 min-h-48 ">
+      <div id="container" className="rounded-3xl p-4 m-1 bg-white max-w-80 min-h-48 ">
         <div id="tags" className="text-start">
           <h5>{tagName?tagName:"TagName"}</h5>
         </div>

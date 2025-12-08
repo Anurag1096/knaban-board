@@ -7,7 +7,7 @@ import { Board } from "./types/BoardTypes";
 export default function BoardView({ cards }:{cards:Board}) { 
   return (
 
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 bg-[#F8FAFC]">
       {cards.map((card: CardsProps,index:number) => {
         return (
      <Draggable
