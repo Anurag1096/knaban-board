@@ -1,44 +1,66 @@
 "use client";
-import { CardsProps } from "@/components/Cards/types";
+import { useState } from "react";
 import ColumnName from "@/components/ColumnName/ColumnName";
 import BoardView from "@/components/CreateBoard/BoardView";
-import { useAppSelector,useAppDispatch } from "@/data/store/hooks";
+import { useAppSelector, useAppDispatch } from "@/data/store/hooks";
 import { dndCard } from "@/data/store/slices/ColumnSlice";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
-
+import { addTask } from "@/data/store/slices/ColumnSlice";
 export default function Home() {
-  const dispatch=useAppDispatch()
+  const [count,setCount]=useState(7)
+  const dispatch = useAppDispatch();
   const BoardData = useAppSelector((state) => state.column);
   function onDrag(result: DropResult<string>) {
     if (!result.destination) return;
-  
+
     const newData = structuredClone(BoardData);
-    console.log(newData)
+    console.log(newData);
     const sourceColumn = newData.find(
       (col) => col.id === result.source.droppableId
     );
     const draggedCard = sourceColumn?.cards[result.source.index];
-    const destinationColumn=newData.find(
-      (col)=>col.id === result.destination?.droppableId
-    )
+    const destinationColumn = newData.find(
+      (col) => col.id === result.destination?.droppableId
+    );
 
     //now remove it from the source and add it to destination
 
-    sourceColumn?.cards.splice(result.source.index,1)
-    destinationColumn?.cards.splice(result.destination.index,0,draggedCard)
-    dispatch(dndCard(newData))
+    sourceColumn?.cards.splice(result.source.index, 1);
+    destinationColumn?.cards.splice(result.destination.index, 0, draggedCard);
+    dispatch(dndCard(newData));
+  }
 
-
+  function handleCardCreation(columnId: string) {
+    setCount(prev=>prev+1)
+    alert("card creation will be handled here for testing only");
+    dispatch(
+      addTask({
+        columnId,
+        cardId: `0${count}`,
+        tagName: "Important",
+        headings: "Some heading",
+        discription: "some more discriptions",
+      })
+    );
   }
   return (
     <DragDropContext onDragEnd={(result) => onDrag(result)}>
       <div className="  grid-rows-1 md:grid grid-cols-3 md:gap-5">
         {BoardData.map((columns) => {
           return (
-            <div key={columns.id} className="flex flex-col mx-10 h-fit  rounded-xl  bg-[#E2E8F0] ">
-              
-                <ColumnName name={columns.name} count={columns.cards.length}/>
-              
+            <div
+              key={columns.id}
+              className="flex flex-col mx-10 h-fit  rounded-xl  bg-[#E2E8F0] "
+            >
+              <ColumnName
+                name={columns.name}
+                count={columns.cards.length}
+                handleClick={() => handleCardCreation(columns.id)}
+              />
+
+              {/* The modal for adding of cards will be here* */}
+
+              {/* ------------------ */}
 
               {/* Each column MUST be a droppable */}
               <Droppable droppableId={columns.id}>

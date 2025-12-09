@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { CardsProps } from "@/components/Cards/types";
 import { Board } from "@/components/CreateBoard/types/BoardTypes";
+interface CreateCardProp extends CardsProps {
+  columnId: string;
+}
 
 // The initial state for every board is an empty array
 const initialState: Board[] = [
@@ -70,12 +74,22 @@ const columnSlice = createSlice({
   name: "column",
   initialState,
   reducers: {
-    addTask: (state, action: PayloadAction<Board>) => {
-      state.push(action.payload);
+    addTask: (state, action: PayloadAction<CreateCardProp>) => {
+      const { columnId, cardId, tagName, headings, discription } =
+        action.payload;
+      const getColumn = state.find((col) => col.id === columnId);
+      if (getColumn) {
+        getColumn.cards.push({
+          cardId,
+          tagName,
+          headings,
+          discription,
+        });
+      }
     },
     dndCard: (state, action: PayloadAction<Board[]>) => {
       //the payload will be a new object all together.. maybe?
-      return action.payload
+      return action.payload;
     },
     emptyTask: (state) => {
       state.length = 0;
@@ -84,5 +98,5 @@ const columnSlice = createSlice({
   },
 });
 
-export const { addTask,dndCard,emptyTask } = columnSlice.actions;
+export const { addTask, dndCard, emptyTask } = columnSlice.actions;
 export default columnSlice.reducer;
