@@ -5,9 +5,17 @@ import BoardView from "@/components/CreateBoard/BoardView";
 import { useAppSelector, useAppDispatch } from "@/data/store/hooks";
 import { dndCard } from "@/data/store/slices/ColumnSlice";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
-import { addTask } from "@/data/store/slices/ColumnSlice";
+import AddTask from "@/components/AddTask/AddTaskModal";
 export default function Home() {
-  const [count,setCount]=useState(7)
+  
+   const [openColumnId, setOpenColumnId] = useState<string | null>(null);
+ 
+  const closeModal = () => {
+  setOpenColumnId(null);
+};
+  const openModal = (colId: string) => {
+  setOpenColumnId(colId);
+};
   const dispatch = useAppDispatch();
   const BoardData = useAppSelector((state) => state.column);
   function onDrag(result: DropResult<string>) {
@@ -30,19 +38,7 @@ export default function Home() {
     dispatch(dndCard(newData));
   }
 
-  function handleCardCreation(columnId: string) {
-    setCount(prev=>prev+1)
-    alert("card creation will be handled here for testing only");
-    dispatch(
-      addTask({
-        columnId,
-        cardId: `0${count}`,
-        tagName: "Important",
-        headings: "Some heading",
-        discription: "some more discriptions",
-      })
-    );
-  }
+ 
   return (
     <DragDropContext onDragEnd={(result) => onDrag(result)}>
       <div className="  grid-rows-1 md:grid grid-cols-3 md:gap-5">
@@ -55,11 +51,11 @@ export default function Home() {
               <ColumnName
                 name={columns.name}
                 count={columns.cards.length}
-                handleClick={() => handleCardCreation(columns.id)}
+                handleClick={() => openModal(columns.id)}
               />
 
               {/* The modal for adding of cards will be here* */}
-
+                 <AddTask isOpen={openColumnId === columns.id} onCloseModal={closeModal} columnId={columns.id}/>
               {/* ------------------ */}
 
               {/* Each column MUST be a droppable */}

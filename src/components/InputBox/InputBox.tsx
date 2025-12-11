@@ -8,9 +8,8 @@ interface InputBoxState extends React.InputHTMLAttributes<HTMLInputElement> {
   required: boolean;
   readonly: boolean;
   placeholder?: string;
-  autocomplete: string;
   id?: string;
-  handleChagne?: () => void;
+  handleChagne?: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 }
 
 export const InputBox = ({
@@ -19,7 +18,7 @@ export const InputBox = ({
   inputName,
   required,
   id,
-  autocomplete,
+
   disabled,
   readonly,
   value,
@@ -34,7 +33,7 @@ export const InputBox = ({
       onChange={handleChagne}
       placeholder={placeholder}
       className={Styles["input--box"]}
-      autoComplete={autocomplete}
+    
       disabled={disabled}
       readOnly={readonly}
       required={required}
