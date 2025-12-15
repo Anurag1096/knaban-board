@@ -6,8 +6,10 @@ import { useAppSelector, useAppDispatch } from "@/data/store/hooks";
 import { dndCard } from "@/data/store/slices/ColumnSlice";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import AddTask from "@/components/AddTask/AddTaskModal";
+import NavBar from "@/components/NabBar/NabBar";
+import { usePathname } from "next/navigation";
 export default function Home() {
-  
+  const pathName=usePathname()
    const [openColumnId, setOpenColumnId] = useState<string | null>(null);
  
   const closeModal = () => {
@@ -39,13 +41,18 @@ export default function Home() {
   }
 
  
-  return (
+  return (<>
+  <div className="flex flex-col ">
+
+  <NavBar boardName={pathName}/>
+  
     <DragDropContext onDragEnd={(result) => onDrag(result)}>
-      <div className="  grid-rows-1 md:grid grid-cols-3 md:gap-5">
+      <div className=" mt-10 grid-rows-1 md:grid grid-cols-3 md:gap-5">
+        
         {BoardData.map((columns) => {
           return (
             <div
-              key={columns.id}
+            key={columns.id}
               className="flex flex-col mx-10 h-fit  rounded-xl  bg-[#E2E8F0] "
             >
               <ColumnName
@@ -76,5 +83,7 @@ export default function Home() {
         })}
       </div>
     </DragDropContext>
+          </div>
+    </>
   );
 }
