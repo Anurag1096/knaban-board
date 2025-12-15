@@ -11,4 +11,5 @@ export interface BoardTypes{
     id:string,
     name:string;
     columns:number;
+    createdAt:number;
 }

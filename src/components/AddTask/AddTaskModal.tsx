@@ -12,7 +12,6 @@ interface Props {
 export default function AddTask({ columnId, isOpen, onCloseModal }: Props) {
   //   ---------------Add task specific code--------------------------
   const dispatch = useAppDispatch();
-  const [count, setCount] = useState(7);
   const [formData, setFormData] = useState<{
     headingVal: string;
     discriptionVal: string;
@@ -30,12 +29,11 @@ export default function AddTask({ columnId, isOpen, onCloseModal }: Props) {
   };
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setCount((prev) => prev + 1);
     // alert("card creation will be handled here for testing only");
     dispatch(
       addTask({
         columnId,
-        cardId: `0${count}`,
+        cardId: crypto.randomUUID(),
         tagName: formData.tagval,
         headings: formData.headingVal,
         discription: formData.discriptionVal,
