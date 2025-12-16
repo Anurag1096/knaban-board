@@ -5,7 +5,7 @@ export interface Board{
      id:string,
     name:string,
     cards:CardsProps[],
-    createdAt: string,
+    createdAt: number,
 }
 export interface BoardTypes{
     id:string,

@@ -35,7 +35,7 @@ const initialState: Board[] = [
       },
     ],
 
-    createdAt: "today",
+    createdAt: 0,
   },
   {
     id: "2",
@@ -51,7 +51,7 @@ const initialState: Board[] = [
       },
     ],
 
-    createdAt: "today",
+    createdAt: 98,
   },
   {
     id: "3",
@@ -66,7 +66,7 @@ const initialState: Board[] = [
       },
     ],
 
-    createdAt: "tomorrow",
+    createdAt: 5666,
   },
 ];
 
@@ -87,6 +87,9 @@ const columnSlice = createSlice({
         });
       }
     },
+    addColumn:(state,action:PayloadAction<{id:string,name:string,cards:CardsProps[],createdAt:number}>)=>{
+        state.push(action.payload)
+    },
     dndCard: (state, action: PayloadAction<Board[]>) => {
       //the payload will be a new object all together.. maybe?
       return action.payload;
@@ -98,5 +101,5 @@ const columnSlice = createSlice({
   },
 });
 
-export const { addTask, dndCard, emptyTask } = columnSlice.actions;
+export const { addTask, dndCard, emptyTask,addColumn } = columnSlice.actions;
 export default columnSlice.reducer;
