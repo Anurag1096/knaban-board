@@ -1,10 +1,11 @@
 interface ColumnProps {
   name: string;
+  id:string;
 }
 
-export default function createColumn({ name }: ColumnProps) {
+export default function createColumn({ name,id }: ColumnProps) {
   return {
-    id: crypto.randomUUID,
+    id,
     name,
     cards: [],
     createdAt: Date.now(),

@@ -1,8 +1,9 @@
 import createColumn from "@/lib/createColumn";
 import { Button } from "../Button/Button";
 import { InputBox } from "../InputBox/InputBox";
-import { useAppDispatch } from "@/data/store/hooks";
+import { useAppDispatch ,useAppSelector} from "@/data/store/hooks";
 import { addColumn } from "@/data/store/slices/ColumnSlice";
+import { useRef } from "react";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
 interface Props {
@@ -11,6 +12,8 @@ interface Props {
 }
 export default function AddColumn({ isOpen, onClose }: Props) {
     const dispatch=useAppDispatch()
+    const col=useAppSelector(state=>state.column)
+    const idcolumn=useRef(9)
   const [formData, setFormData] = useState<{ name: string }>({ name: "" });
 
   const handleFormUpdate = (
@@ -23,8 +26,11 @@ export default function AddColumn({ isOpen, onClose }: Props) {
 
   function handleFormSubmit(e:React.FormEvent){
     e.preventDefault();
-    const newColumn=createColumn({name:formData.name})
+    const newId=idcolumn.current++
+    const newColumn=createColumn({name:formData.name,id:newId.toString()})
     dispatch(addColumn(newColumn))
+    console.log(col)
+
   }
   return (
     <>
