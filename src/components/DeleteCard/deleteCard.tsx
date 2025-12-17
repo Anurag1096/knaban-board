@@ -20,6 +20,7 @@ export default function DeleteCard({
   function handleDelete(e: React.FormEvent) {
     e.preventDefault();
     console.log(cardId)
+    console.log(columnId)
     // dispatch(deleteTask({ columnId, cardId }));
   }
 

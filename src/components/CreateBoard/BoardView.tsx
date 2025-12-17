@@ -4,7 +4,13 @@ import Cards from "../Cards/Cards";
 import { Draggable } from "@hello-pangea/dnd";
 import { CardsProps } from "../Cards/types";
 import { Board } from "./types/BoardTypes";
-export default function BoardView({ cards }:{cards:Board}) { 
+
+interface BoardViewProps {
+  cards: CardsProps[];
+  columnsId: string;
+}
+export default function BoardView({ cards,columnsId }:BoardViewProps) { 
+ 
   return (
 
     <div className="flex flex-col gap-4 bg-[#F8FAFC]">
@@ -22,6 +28,7 @@ export default function BoardView({ cards }:{cards:Board}) {
               {...provided.dragHandleProps}
             >
               <Cards
+                columnId={columnsId}
                 tagName={card.tagName}
                 headings={card.headings}
                 discription={card.discription}

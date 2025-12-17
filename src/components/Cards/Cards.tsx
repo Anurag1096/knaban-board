@@ -4,8 +4,10 @@ import Image from "next/image";
 import { useState } from "react";
 import { CardsProps } from "./types";
 import DeleteCard from "../DeleteCard/deleteCard";
-
-export default function Cards({tagName,headings,discription,cardId}:CardsProps) {
+interface Props extends CardsProps{
+  columnId:string;
+}
+export default function Cards({tagName,headings,discription,cardId,columnId}:Props) {
  const [openCardId, setOpenCardId] = useState<string | null>(null);
   function handleCloseDeleteModal(){
     setOpenCardId(null)
@@ -15,7 +17,7 @@ export default function Cards({tagName,headings,discription,cardId}:CardsProps) 
   }
   return (
     <>
-    <DeleteCard columnId={""} cardId={cardId} isOpen={openCardId === cardId} onClose={handleCloseDeleteModal} />
+    <DeleteCard columnId={columnId} cardId={cardId} isOpen={openCardId === cardId} onClose={handleCloseDeleteModal} />
       <div id="container" className="rounded-3xl p-4 m-1 bg-white max-w-80 min-h-48 ">
         <div id="tags" className="text-start flex justify-between items-center">
           <h5>{tagName?tagName:"TagName"}</h5>

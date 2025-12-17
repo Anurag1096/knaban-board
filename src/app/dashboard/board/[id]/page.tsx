@@ -50,6 +50,7 @@ export default function Home() {
       <div className=" mt-10 grid-rows-1 md:grid grid-cols-3 md:gap-5">
         
         {BoardData.map((columns) => {
+        
           return (
             <div
             key={columns.id}
@@ -73,7 +74,7 @@ export default function Home() {
                     {...provided.droppableProps}
                     className="flex flex-col gap-6 p-2"
                   >
-                    <BoardView cards={columns.cards} />
+                    <BoardView cards={columns.cards} columnsId={columns.id} />
                     {provided.placeholder}
                   </div>
                 )}
