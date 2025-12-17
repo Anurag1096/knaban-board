@@ -90,6 +90,13 @@ const columnSlice = createSlice({
     addColumn:(state,action:PayloadAction<{id:string,name:string,cards:CardsProps[],createdAt:number}>)=>{
         state.push(action.payload)
     },
+    deleteTask:(state,action:PayloadAction<{columnId:string,cardId:string}>)=>{
+         const {columnId,cardId}=action.payload;
+         const getCol=state.find((col)=>col.id === columnId)
+         if(getCol){
+          getCol.cards.filter((card)=>card.cardId !== cardId)
+         }  
+    },
     dndCard: (state, action: PayloadAction<Board[]>) => {
       //the payload will be a new object all together.. maybe?
       return action.payload;
@@ -101,5 +108,5 @@ const columnSlice = createSlice({
   },
 });
 
-export const { addTask, dndCard, emptyTask,addColumn } = columnSlice.actions;
+export const { addTask, dndCard, emptyTask,addColumn ,deleteTask} = columnSlice.actions;
 export default columnSlice.reducer;
