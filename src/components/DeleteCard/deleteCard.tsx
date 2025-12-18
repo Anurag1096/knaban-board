@@ -21,7 +21,7 @@ export default function DeleteCard({
     e.preventDefault();
     console.log(cardId)
     console.log(columnId)
-    // dispatch(deleteTask({ columnId, cardId }));
+    dispatch(deleteTask({ columnId, cardId }));
   }
 
   return (

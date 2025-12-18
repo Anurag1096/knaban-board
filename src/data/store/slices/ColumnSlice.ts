@@ -93,9 +93,11 @@ const columnSlice = createSlice({
     deleteTask:(state,action:PayloadAction<{columnId:string,cardId:string}>)=>{
          const {columnId,cardId}=action.payload;
          const getCol=state.find((col)=>col.id === columnId)
-         if(getCol){
-          getCol.cards.filter((card)=>card.cardId !== cardId)
-         }  
+         if(!getCol) return
+        const index = getCol?.cards.findIndex(card => card.cardId === cardId)
+        if(index != -1){
+           getCol.cards.splice(index, 1);
+        }
     },
     dndCard: (state, action: PayloadAction<Board[]>) => {
       //the payload will be a new object all together.. maybe?

@@ -3,7 +3,6 @@
 import Cards from "../Cards/Cards";
 import { Draggable } from "@hello-pangea/dnd";
 import { CardsProps } from "../Cards/types";
-import { Board } from "./types/BoardTypes";
 
 interface BoardViewProps {
   cards: CardsProps[];
