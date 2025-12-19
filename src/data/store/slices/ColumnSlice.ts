@@ -87,17 +87,35 @@ const columnSlice = createSlice({
         });
       }
     },
-    addColumn:(state,action:PayloadAction<{id:string,name:string,cards:CardsProps[],createdAt:number}>)=>{
-        state.push(action.payload)
+    addColumn: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        name: string;
+        cards: CardsProps[];
+        createdAt: number;
+      }>
+    ) => {
+      state.push(action.payload);
     },
-    deleteTask:(state,action:PayloadAction<{columnId:string,cardId:string}>)=>{
-         const {columnId,cardId}=action.payload;
-         const getCol=state.find((col)=>col.id === columnId)
-         if(!getCol) return
-        const index = getCol?.cards.findIndex(card => card.cardId === cardId)
-        if(index != -1){
-           getCol.cards.splice(index, 1);
-        }
+    deleteTask: (
+      state,
+      action: PayloadAction<{ columnId: string; cardId: string }>
+    ) => {
+      const { columnId, cardId } = action.payload;
+      const getCol = state.find((col) => col.id === columnId);
+      if (!getCol) return;
+      const index = getCol?.cards.findIndex((card) => card.cardId === cardId);
+      if (index != -1) {
+        getCol.cards.splice(index, 1);
+      }
+    },
+    deleteColumn: (state, action: PayloadAction<{ columnId: string }>) => {
+      const { columnId } = action.payload;
+      const index = state.findIndex((col) => col.id === columnId);
+      if (index !== -1) {
+        state.splice(index, 1);
+      }
     },
     dndCard: (state, action: PayloadAction<Board[]>) => {
       //the payload will be a new object all together.. maybe?
@@ -110,5 +128,12 @@ const columnSlice = createSlice({
   },
 });
 
-export const { addTask, dndCard, emptyTask,addColumn ,deleteTask} = columnSlice.actions;
+export const {
+  addTask,
+  dndCard,
+  emptyTask,
+  addColumn,
+  deleteTask,
+  deleteColumn,
+} = columnSlice.actions;
 export default columnSlice.reducer;

@@ -64,6 +64,7 @@ export default function Home() {
 
               {/* The modal for adding of cards will be here* */}
                  <AddTask isOpen={openColumnId === columns.id} onCloseModal={closeModal} columnId={columns.id}/>
+                 
               {/* ------------------ */}
 
               {/* Each column MUST be a droppable */}
