@@ -19,15 +19,22 @@ export default function MobileSidebar() {
     <>
       {openSidebar ? (
         <aside
-          className="  fixed top-0 left-0 
-    w-3/4 sm:hidden 
-    max-w-xs
-    h-screen 
-    bg-gray-100 dark:bg-gray-900 
-    p-10 z-50 
-    transition-transform"
+   className={`fixed top-0 left-0 w-3/4 max-w-xs h-screen bg-gray-100 dark:bg-gray-900 p-10 z-50 transition-transform duration-300 ease-in-out ${openSidebar ? "translate-x-0" : "-translate-x-full"}
+  `}
         >
-          <div onClick={handleOpenSideBar}>XXX</div>
+          <div
+            className="absolute top-2 right-2  z-10 sm:hidden "
+            onClick={handleOpenSideBar}
+          >
+            <Image
+              src={"/close.svg"}
+              alt="hamburg_icon"
+              width={32}        
+              height={32}
+              onClick={handleOpenSideBar}
+            />
+          </div>
+
           <nav className="flex flex-col gap-3">
             {links.map((link) => {
               const isActive = pathname === link.href;
@@ -49,9 +56,9 @@ export default function MobileSidebar() {
           </nav>
         </aside>
       ) : (
-        <div className="absolute top-2 right-2  z-10 sm:hidden ">
+        <div className="fixed top-2 right-2  z-10 sm:hidden ">
           <Image
-            src={"/delete_icon.svg"}
+            src={"/ham.svg"}
             alt="hamburg_icon"
             width={32}
             height={32}
