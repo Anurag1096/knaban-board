@@ -12,7 +12,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className=" p-10 bg-gray-100 dark:bg-gray-900 min-h-screen">
+    <aside className="hidden sm:block p-10 bg-gray-100  dark:bg-gray-900 min-h-screen">
       <nav className="flex flex-col gap-3">
         {links.map((link) => {
           const isActive = pathname === link.href;

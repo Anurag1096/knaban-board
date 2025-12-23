@@ -1,12 +1,14 @@
-import SideBar from '@/components/Sidebar/Sidebar'
+
+import SidebarContainer from '@/components/Sidebar/SidebarContainer'
 
 export default function DashboardLayout({children}:{children:React.ReactNode}){
+
 return(
-    <div className='flex  '>
+    <div className='flex overflow-x-hidden'>
+       
+       <SidebarContainer/>
 
-        <SideBar/>
-
-      <main className="flex flex-row p-6 md:flex-1  ">
+      <main className="flex flex-row mt-12   md:flex-1  ">
         {children}
         
       </main>
