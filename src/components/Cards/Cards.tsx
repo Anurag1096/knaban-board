@@ -4,38 +4,85 @@ import Image from "next/image";
 import { useState } from "react";
 import { CardsProps } from "./types";
 import DeleteCard from "../DeleteCard/deleteCard";
-interface Props extends CardsProps{
-  columnId:string;
+
+interface Props extends CardsProps {
+  columnId: string;
 }
-export default function Cards({tagName,headings,discription,cardId,columnId}:Props) {
- const [openCardId, setOpenCardId] = useState<string | null>(null);
-  function handleCloseDeleteModal(){
-    setOpenCardId(null)
+export default function Cards({
+  tagName,
+  headings,
+  discription,
+  cardId,
+  columnId,
+}: Props) {
+  const [openCardId, setOpenCardId] = useState<string | null>(null);
+  const [cardProps, setCardProps] = useState<{
+    title: string;
+    discription: string;
+  }>({ title: headings, discription: discription });
+  function handleCloseDeleteModal() {
+    setOpenCardId(null);
   }
-  function handleOpen(cardId:string){
-    setOpenCardId(cardId)
+  function handleOpen(cardId: string) {
+    setOpenCardId(cardId);
   }
+  function handleValChange(
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) {
+    const { name, value } = e.target;
+    setCardProps((prev) => ({ ...prev, [name]: value }));
+  }
+
   return (
     <>
-    <DeleteCard columnId={columnId} cardId={cardId} isOpen={openCardId === cardId} onClose={handleCloseDeleteModal} />
-      <div id="container" className="rounded-3xl p-4 m-1 bg-white max-w-80 min-h-48 ">
+      <DeleteCard
+        columnId={columnId}
+        cardId={cardId}
+        isOpen={openCardId === cardId}
+        onClose={handleCloseDeleteModal}
+      />
+      <div
+        id="container"
+        className="rounded-3xl p-4 m-1 bg-white max-w-80 min-h-48 "
+      >
         <div id="tags" className="text-start flex justify-between items-center">
-          <h5>{tagName?tagName:"TagName"}</h5>
-          <div onClick={()=>handleOpen(cardId)}>
-            <Image src={'/delete_icon.svg'} alt="delete_icon"  width={24} height={24}/>
+          <h5>{tagName ? tagName : "TagName"}</h5>
+          <div onClick={() => handleOpen(cardId)}>
+            <Image
+              src={"/delete_icon.svg"}
+              alt="delete_icon"
+              width={24}
+              height={24}
+            />
           </div>
         </div>
         <div
           id="headings"
           className=" text-lg text-black font-extrabold text-shadow-black"
         >
-          <h4>{headings?headings:"Your heading"}</h4>
+          <input
+            id={"title"}
+            name={"title"}
+            value={cardProps.title}
+            onChange={handleValChange}
+           
+       
+          />
         </div>
         <div
           id="discriptions"
-          className="text-md text-shadow-2xs font-medium text-gray-500 "
+          className="text-md text-shadow-2xs font-medium text-gray-500 w-full"
         >
-          <h5>{discription?discription:"Lorem ipsum dolor sit amet, libre unst consectetur adispicing elit."}</h5>
+          <textarea
+            id={"discription"}
+            name={"discription"}
+            
+            value={cardProps.discription}
+            onChange={handleValChange}
+            
+        
+            
+          />
         </div>
         <div id="bottom-row" className="flex justify-between items-center">
           <div>this will have an avatar component list</div>
