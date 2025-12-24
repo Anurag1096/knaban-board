@@ -42,19 +42,19 @@ export default function Home() {
 
  
   return (<>
-  <div className="flex flex-col ">
+  <div className="flex flex-col w-full ">
 
   <NavBar boardName={pathName}/>
   
     <DragDropContext onDragEnd={(result) => onDrag(result)}>
-      <div className=" mt-10 grid-rows-1 md:grid grid-cols-3 md:gap-5">
+      <div className=" mt-10 grid-rows-1  md:grid grid-cols-3 md:gap-1">
         
         {BoardData.map((columns) => {
         
           return (
             <div
             key={columns.id}
-              className="flex flex-col mx-10 h-fit  rounded-xl  bg-[#E2E8F0] "
+              className="flex flex-col mx-10 mb-8 h-fit w-fit p-2 rounded-xl  bg-[#E2E8F0] "
             >
               <ColumnName
                 name={columns.name}
@@ -73,7 +73,7 @@ export default function Home() {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className="flex flex-col gap-6 p-2"
+                    className="flex flex-col gap-8 p-2"
                   >
                     <BoardView cards={columns.cards} columnsId={columns.id} />
                     {provided.placeholder}
