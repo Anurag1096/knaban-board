@@ -125,6 +125,15 @@ const columnSlice = createSlice({
       state.length = 0;
     },
     // need to add update task reducer
+    updateTask:(state,action:PayloadAction<{columnId:string,cardId:string,title:string,discription:string}>)=>{
+        const {columnId,cardId,title,discription}=action.payload
+        const getCol=state.find((col)=>col.id===columnId)
+        if(!getCol) return
+        const changedCard=getCol.cards.find(card=>card.cardId=== cardId)
+        if(!changedCard) return
+        changedCard.headings=title
+        changedCard.discription=discription  
+    }
   },
 });
 
@@ -135,5 +144,6 @@ export const {
   addColumn,
   deleteTask,
   deleteColumn,
+  updateTask,
 } = columnSlice.actions;
 export default columnSlice.reducer;

@@ -2,7 +2,9 @@
 // and how to assign work to people.
 import Image from "next/image";
 import { useState } from "react";
+import { useAppDispatch } from "@/data/store/hooks";
 import { CardsProps } from "./types";
+import { updateTask } from "@/data/store/slices/ColumnSlice";
 import DeleteCard from "../DeleteCard/deleteCard";
 
 interface Props extends CardsProps {
@@ -16,6 +18,7 @@ export default function Cards({
   columnId,
 }: Props) {
   const [openCardId, setOpenCardId] = useState<string | null>(null);
+  const dispatch =useAppDispatch()
   const [cardProps, setCardProps] = useState<{
     title: string;
     discription: string;
@@ -31,6 +34,7 @@ export default function Cards({
   ) {
     const { name, value } = e.target;
     setCardProps((prev) => ({ ...prev, [name]: value }));
+    dispatch(updateTask({columnId,cardId,title:cardProps.title,discription:cardProps.discription}))
   }
 
   return (
