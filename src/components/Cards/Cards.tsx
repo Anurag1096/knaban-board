@@ -60,8 +60,9 @@ export default function Cards({
           id="headings"
           className=" text-lg text-black font-extrabold text-shadow-black"
         >
-          <input
+          <textarea
             id={"title"}
+            className="w-full h-fit resize-none"
             name={"title"}
             value={cardProps.title}
             onChange={handleValChange}
@@ -76,7 +77,7 @@ export default function Cards({
           <textarea
             id={"discription"}
             name={"discription"}
-            
+            className=" resize-none w-full"
             value={cardProps.discription}
             onChange={handleValChange}
             
