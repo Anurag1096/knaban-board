@@ -19,10 +19,6 @@ export default function Cards({
 }: Props) {
   const [openCardId, setOpenCardId] = useState<string | null>(null);
   const dispatch =useAppDispatch()
-  const [cardProps, setCardProps] = useState<{
-    title: string;
-    discription: string;
-  }>({ title: headings, discription: discription });
   function handleCloseDeleteModal() {
     setOpenCardId(null);
   }
@@ -33,8 +29,13 @@ export default function Cards({
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) {
     const { name, value } = e.target;
-    setCardProps((prev) => ({ ...prev, [name]: value }));
-    dispatch(updateTask({columnId,cardId,title:cardProps.title,discription:cardProps.discription}))
+    if(name==='title'){
+
+      headings=value
+    }else if(name=== "discription"){
+      discription=value
+    }
+    dispatch(updateTask({columnId,cardId,title:headings,discription:discription}))
   }
 
   return (
@@ -68,7 +69,7 @@ export default function Cards({
             id={"title"}
             className="w-full h-fit resize-none"
             name={"title"}
-            value={cardProps.title}
+            value={headings}
             onChange={handleValChange}
            
        
@@ -82,7 +83,7 @@ export default function Cards({
             id={"discription"}
             name={"discription"}
             className=" resize-none w-full"
-            value={cardProps.discription}
+            value={discription}
             onChange={handleValChange}
             
         
