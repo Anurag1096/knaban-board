@@ -1,6 +1,9 @@
 @import "tailwindcss";
-
-
+/* Default = LIGHT MODE */
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -14,6 +17,8 @@
     --foreground: #ededed;
   }
 }
+
+
 
 body {
   background: var(--background);
