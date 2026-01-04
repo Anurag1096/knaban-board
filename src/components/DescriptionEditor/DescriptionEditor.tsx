@@ -1,30 +1,37 @@
 "use client";
 
 import { useAppDispatch } from "@/data/store/hooks";
-import { useEffect } from "react";
-import Document from '@tiptap/extension-document'
-import { EditorContent, useEditor} from "@tiptap/react";
+import { useEffect, useRef, useState } from "react";
+import Document from "@tiptap/extension-document";
+import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { updateTask } from "@/data/store/slices/ColumnSlice";
-import { TaskItem, TaskList } from '@tiptap/extension-list'
+import { TaskItem, TaskList } from "@tiptap/extension-list";
 interface Props {
   columnId: string;
   cardId: string;
   value: string; // current description HTML from Redux
-  title: string; 
+  title: string;
 }
 const CustomDocument = Document.extend({
-  content: 'taskList',
-})
+  content: "taskList",
+});
 
 const CustomTaskItem = TaskItem.extend({
-  content: 'inline*',
-})
-export default function DescriptionEditor({ value, columnId, cardId, title }: Props) {
+  content: "inline*",
+});
+export default function DescriptionEditor({
+  value,
+  columnId,
+  cardId,
+  title,
+}: Props) {
   const dispatch = useAppDispatch();
-
+  const editorRef = useRef<HTMLDivElement | null>(null);
+  const [menu, setMenu] = useState({ x: 0, y: 0, visible: false });
+  const menuRef = useRef<HTMLDivElement | null>(null);
   const editor = useEditor({
-    extensions: [StarterKit,CustomDocument, TaskList, CustomTaskItem],
+    extensions: [StarterKit],
     content: value,
     immediatelyRender: false,
 
@@ -50,11 +57,56 @@ export default function DescriptionEditor({ value, columnId, cardId, title }: Pr
       editor.commands.setContent(value);
     }
   }, [value, editor]);
+  //To listin for right click inside editor
+  useEffect(() => {
+    const el = editorRef.current;
+    if (!el) return;
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault(); // prevent default browser menu
+      console.log("Right click detected!", e.clientX, e.clientY);
+
+      // You can now open a custom menu at e.clientX / e.clientY
+      // showContextMenu({ x: e.clientX, y: e.clientY });
+      setMenu({ x: e.clientX, y: e.clientY, visible: true });
+    };
+
+    el.addEventListener("contextmenu", handleContextMenu);
+
+    return () => {
+      el.removeEventListener("contextmenu", handleContextMenu);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!menuRef.current) return;
+      if (!menuRef.current.contains(e.target as Node)) {
+        setMenu((prev) => ({ ...prev, visible: false }));
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <EditorContent
-      editor={editor}
-      className="border rounded-md p-2 bg-white dark:bg-gray-500 dark:text-white"
-    />
+    <div ref={editorRef}>
+      <EditorContent
+        editor={editor}
+        className="border rounded-md p-2 bg-white dark:bg-gray-500 dark:text-white"
+      />
+
+      {menu.visible && (
+        <div
+          ref={menuRef}
+          style={{ position: "fixed", top: menu.y, left: menu.x }}
+          className="bg-white border shadow-md p-2 rounded"
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          <button onClick={() => alert("jioi")}>Delete Task</button>
+          <button>Edit Task</button>
+        </div>
+      )}
+    </div>
   );
 }
