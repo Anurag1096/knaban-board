@@ -1,31 +1,60 @@
-
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useAppDispatch } from "@/data/store/hooks";
+import { useEffect } from "react";
+import Document from '@tiptap/extension-document'
+import { EditorContent, useEditor} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-interface Props{
-    value:string;
-    id:string;
-    name:string;
-    onChange:(e:React.ChangeEvent<HTMLTextAreaElement>)=> void;
+import { updateTask } from "@/data/store/slices/ColumnSlice";
+import { TaskItem, TaskList } from '@tiptap/extension-list'
+interface Props {
+  columnId: string;
+  cardId: string;
+  value: string; // current description HTML from Redux
+  title: string; 
 }
-export default function DescriptionEditor({ value, onChange, id,name}:Props) {
+const CustomDocument = Document.extend({
+  content: 'taskList',
+})
+
+const CustomTaskItem = TaskItem.extend({
+  content: 'inline*',
+})
+export default function DescriptionEditor({ value, columnId, cardId, title }: Props) {
+  const dispatch = useAppDispatch();
+
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit,CustomDocument, TaskList, CustomTaskItem],
     content: value,
     immediatelyRender: false,
+
+    // 🔥 On every change, dispatch the new content
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      const html = editor.getHTML();
+      dispatch(
+        updateTask({
+          columnId,
+          cardId,
+          title,
+          discription: html, // send current editor content
+        })
+      );
     },
   });
 
+  // 🔄 Sync Redux value → editor content if parent updates
+  useEffect(() => {
+    if (!editor) return;
+    const current = editor.getHTML();
+    if (value !== current) {
+      editor.commands.setContent(value);
+    }
+  }, [value, editor]);
+
   return (
     <EditorContent
-     id={id}
-     name={name}
       editor={editor}
-      className="border rounded-md p-2 bg-white dark:bg-gray-900"
+      className="border rounded-md p-2 bg-white dark:bg-gray-500 dark:text-white"
     />
   );
 }
-

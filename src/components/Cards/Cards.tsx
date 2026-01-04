@@ -1,6 +1,6 @@
 //need to figure out how avatar list data and comments count should be structure
 // and how to assign work to people.
-"use client"
+"use client";
 import Image from "next/image";
 import { useState } from "react";
 import { useAppDispatch } from "@/data/store/hooks";
@@ -20,7 +20,7 @@ export default function Cards({
   columnId,
 }: Props) {
   const [openCardId, setOpenCardId] = useState<string | null>(null);
-  const dispatch =useAppDispatch()
+  const dispatch = useAppDispatch();
   function handleCloseDeleteModal() {
     setOpenCardId(null);
   }
@@ -31,13 +31,19 @@ export default function Cards({
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) {
     const { name, value } = e.target;
-    if(name==='title'){
-
-      headings=value
-    }else if(name=== "discription"){
-      discription=value
+    if (name === "title") {
+      headings = value;
+    } else if (name === "discription") {
+      discription = value;
     }
-    dispatch(updateTask({columnId,cardId,title:headings,discription:discription}))
+    dispatch(
+      updateTask({
+        columnId,
+        cardId,
+        title: headings,
+        discription: discription,
+      })
+    );
   }
 
   return (
@@ -73,12 +79,10 @@ export default function Cards({
             name={"title"}
             value={headings}
             onChange={handleValChange}
-           
-       
           />
         </div>
         {/* ----------start---------- */}
-        <div
+        {/* <div
           id="discriptions"
           className="text-md text-shadow-2xs font-medium text-gray-500 w-full"
         >
@@ -92,20 +96,24 @@ export default function Cards({
         
             
           />
-        </div>
-{/* -------------second for testing-------------- */}
-  {/* <div
+        </div> */}
+        {/* -------------second for testing-------------- */}
+       
+       
+        <div
           id="discriptions"
           className="text-md text-shadow-2xs font-medium text-gray-500 w-full"
-        >
-          <DescriptionEditor 
-             id={"discription"}
-            name={"discription"} 
-            value={discription} onChange={handleValChange}/>
-          
-        </div> */}
+        > 
+          <DescriptionEditor
+            columnId={columnId}
+            cardId={cardId}
+            value={discription}
+            title={headings}
+           
+          />
+        </div>
 
-      {/* ----------------end--------- */}
+   
 
         <div id="bottom-row" className="flex justify-between items-center">
           <div>this will have an avatar component list</div>
