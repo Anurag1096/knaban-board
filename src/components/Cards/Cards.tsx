@@ -1,11 +1,13 @@
 //need to figure out how avatar list data and comments count should be structure
 // and how to assign work to people.
+"use client"
 import Image from "next/image";
 import { useState } from "react";
 import { useAppDispatch } from "@/data/store/hooks";
 import { CardsProps } from "./types";
 import { updateTask } from "@/data/store/slices/ColumnSlice";
 import DeleteCard from "../DeleteCard/deleteCard";
+import DescriptionEditor from "../DescriptionEditor/DescriptionEditor";
 
 interface Props extends CardsProps {
   columnId: string;
@@ -75,6 +77,7 @@ export default function Cards({
        
           />
         </div>
+        {/* ----------start---------- */}
         <div
           id="discriptions"
           className="text-md text-shadow-2xs font-medium text-gray-500 w-full"
@@ -90,6 +93,20 @@ export default function Cards({
             
           />
         </div>
+{/* -------------second for testing-------------- */}
+  {/* <div
+          id="discriptions"
+          className="text-md text-shadow-2xs font-medium text-gray-500 w-full"
+        >
+          <DescriptionEditor 
+             id={"discription"}
+            name={"discription"} 
+            value={discription} onChange={handleValChange}/>
+          
+        </div> */}
+
+      {/* ----------------end--------- */}
+
         <div id="bottom-row" className="flex justify-between items-center">
           <div>this will have an avatar component list</div>
           <div>
