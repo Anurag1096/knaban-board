@@ -3,10 +3,14 @@
 import { useAppDispatch } from "@/data/store/hooks";
 import { useEffect, useRef, useState } from "react";
 import Document from "@tiptap/extension-document";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import type { Editor } from "@tiptap/react";
 import { updateTask } from "@/data/store/slices/ColumnSlice";
 import { TaskItem, TaskList } from "@tiptap/extension-list";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+import MenuDropDown from "../MenuEditorDropDown/MenuDropDown";
 interface Props {
   columnId: string;
   cardId: string;
@@ -20,6 +24,7 @@ const CustomDocument = Document.extend({
 const CustomTaskItem = TaskItem.extend({
   content: "inline*",
 });
+
 export default function DescriptionEditor({
   value,
   columnId,
@@ -30,8 +35,17 @@ export default function DescriptionEditor({
   const editorRef = useRef<HTMLDivElement | null>(null);
   const [menu, setMenu] = useState({ x: 0, y: 0, visible: false });
   const menuRef = useRef<HTMLDivElement | null>(null);
+
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      Paragraph,
+      Text,
+      TaskList,
+      TaskItem.configure({
+        nested: true, // allow nested checkboxes
+      }),
+    ],
     content: value,
     immediatelyRender: false,
 
@@ -93,19 +107,11 @@ export default function DescriptionEditor({
     <div ref={editorRef}>
       <EditorContent
         editor={editor}
-        className="border rounded-md p-2 bg-white dark:bg-gray-500 dark:text-white"
+        className="border rounded-md p-2 bg-white dark:bg-gray-200 dark:text-black"
       />
 
       {menu.visible && (
-        <div
-          ref={menuRef}
-          style={{ position: "fixed", top: menu.y, left: menu.x }}
-          className="bg-white border shadow-md p-2 rounded"
-          onMouseDown={(e) => e.stopPropagation()}
-        >
-          <button onClick={() => alert("jioi")}>Delete Task</button>
-          <button>Edit Task</button>
-        </div>
+        <MenuDropDown editor={editor} MenuRef={menuRef} menu={menu} />
       )}
     </div>
   );
