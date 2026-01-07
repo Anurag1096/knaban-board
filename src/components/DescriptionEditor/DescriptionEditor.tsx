@@ -35,6 +35,10 @@ export default function DescriptionEditor({
   const editorRef = useRef<HTMLDivElement | null>(null);
   const [menu, setMenu] = useState({ x: 0, y: 0, visible: false });
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const [secondMenu,setSecMenu]=useState(false)
+  function handlesecMenu(){
+    setSecMenu(!secondMenu)
+  }
 
   const editor = useEditor({
     extensions: [
@@ -82,6 +86,7 @@ export default function DescriptionEditor({
       // You can now open a custom menu at e.clientX / e.clientY
       // showContextMenu({ x: e.clientX, y: e.clientY });
       setMenu({ x: e.clientX, y: e.clientY, visible: true });
+      
     };
 
     el.addEventListener("contextmenu", handleContextMenu);
@@ -96,6 +101,7 @@ export default function DescriptionEditor({
       if (!menuRef.current) return;
       if (!menuRef.current.contains(e.target as Node)) {
         setMenu((prev) => ({ ...prev, visible: false }));
+        setSecMenu(false);
       }
     };
 
@@ -107,11 +113,11 @@ export default function DescriptionEditor({
     <div ref={editorRef}>
       <EditorContent
         editor={editor}
-        className="border rounded-md p-2 bg-white dark:bg-gray-200 dark:text-black"
+        className="border z-0 relative rounded-md p-2 bg-white dark:bg-gray-200 dark:text-black"
       />
 
       {menu.visible && (
-        <MenuDropDown editor={editor} MenuRef={menuRef} menu={menu} />
+        <MenuDropDown editor={editor} MenuRef={menuRef} menu={menu} secondMenu={secondMenu} handleSecMenu={handlesecMenu} />
       )}
     </div>
   );

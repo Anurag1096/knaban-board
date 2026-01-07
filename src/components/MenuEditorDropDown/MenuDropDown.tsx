@@ -1,14 +1,18 @@
 import { useEditorState } from "@tiptap/react";
 import type { Editor } from "@tiptap/react";
-
+import { useState, useRef,useEffect } from "react";
 export default function MenuDropDown({
   editor,
   MenuRef,
   menu,
+  secondMenu,
+  handleSecMenu,
 }: {
   editor: Editor;
   MenuRef: React.RefObject<HTMLDivElement>;
-  menu: { y: string; x: string };
+  menu: { y: string; x: string; visible: boolean };
+  secondMenu: boolean;
+  handleSecMenu: () => void;
 }) {
   const editorState = useEditorState({
     editor,
@@ -41,109 +45,151 @@ export default function MenuDropDown({
       };
     },
   });
-
+  const EditPos = useRef<HTMLDivElement | null>(null);
+  const [divHeight,setDivHeight]=useState({top:0,left:0})
+  console.log("positon of the element", EditPos.current?.clientHeight);
+  useEffect(()=>{
+    if(!EditPos.current) return
+    const rect = EditPos.current.getBoundingClientRect();
+    setDivHeight({top:rect.top,left:rect.right})
+    
+  },[EditPos])
   return (
     <div
       ref={MenuRef}
       style={{ position: "fixed", top: menu.y, left: menu.x }}
-      className="bg-white border shadow-md p-2 rounded"
+      className="bg-white border shadow-md p-2 rounded "
       onMouseDown={(e) => e.stopPropagation()}
     >
-      <div>
-        <button
-          className="hover:cursor-pointer hover:bg-amber-100"
-          onClick={() => alert("jioi")}
+      {secondMenu && (
+        <div
+          style={{ position: "fixed", top: divHeight.top, left:divHeight.left }}
+          className="bg-white border shadow-md p-2 rounded"
+          onMouseDown={(e) => e.stopPropagation()}
         >
-          Bullets
-        </button>
-      </div>
+          {/* Start of second menu */}
+          <div>
+            <button
+              className="hover:cursor-pointer hover:bg-amber-100"
+              onClick={() => alert("jioi")}
+            >
+              Bullets
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() => editor.chain().focus().toggleBold().run()}
+              disabled={!editorState.canBold}
+              className={
+                editorState.isBold
+                  ? "hover:cursor-pointer hover:bg-red-300 bg-amber-100"
+                  : "hover:cursor-pointer hover:bg-amber-300 "
+              }
+            >
+              Bold
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() => editor.chain().focus().toggleItalic().run()}
+              disabled={!editorState.canItalic}
+              className={
+                editorState.isItalic
+                  ? "hover:cursor-pointer hover:bg-red-300 bg-amber-100"
+                  : "hover:cursor-pointer hover:bg-amber-300 "
+              }
+            >
+              Italic
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() => editor.chain().focus().toggleStrike().run()}
+              disabled={!editorState.canStrike}
+              className={
+                editorState.isStrike
+                  ? "hover:cursor-pointer hover:bg-red-300 bg-amber-100"
+                  : "hover:cursor-pointer hover:bg-amber-300 "
+              }
+            >
+              Strike
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() => editor.chain().focus().setParagraph().run()}
+              className={
+                editorState.isParagraph
+                  ? "hover:cursor-pointer hover:bg-red-300 bg-amber-100"
+                  : "hover:cursor-pointer hover:bg-amber-300 "
+              }
+            >
+              Paragraph
+            </button>
+          </div>
+
+          <div>
+            <button
+              onClick={() => editor.chain().focus().toggleBulletList().run()}
+              className={
+                editorState.isBulletList
+                  ? "hover:cursor-pointer hover:bg-red-300 bg-amber-100"
+                  : "hover:cursor-pointer hover:bg-red-300"
+              }
+            >
+              Bullet list
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() => editor.chain().focus().setCodeBlock().run()}
+              className={
+                editorState.isCodeBlock
+                  ? "hover:cursor-pointer hover:bg-red-300 bg-amber-100"
+                  : "hover:cursor-pointer hover:bg-amber-300 "
+              }
+            >
+              Code block
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() => editor.chain().focus().toggleTaskList().run()}
+              className={
+                editorState.isTaskList
+                  ? "bg-amber-300 hover:bg-red-300 cursor-pointer px-2 py-1 rounded"
+                  : "bg-gray-200 hover:bg-amber-300 cursor-pointer px-2 py-1 rounded"
+              }
+            >
+              Checkbox
+            </button>
+          </div>
+          {/* end of second menu */}
+        </div>
+      )}
       <div>
+        <button>New button</button>
+      </div>
+        <div ref={EditPos}>
         <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          disabled={!editorState.canBold}
+          onClick={handleSecMenu}
           className={
-            editorState.isBold
-              ? "hover:cursor-pointer hover:bg-red-300 bg-amber-100"
-              : "hover:cursor-pointer hover:bg-amber-300 "
+            "bg-amber-300 hover:bg-red-300 cursor-pointer px-2 py-1 rounded"
           }
         >
-          Bold
+          Edit menu
         </button>
       </div>
       <div>
-        <button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          disabled={!editorState.canItalic}
-          className={
-            editorState.isItalic
-              ? "hover:cursor-pointer hover:bg-red-300 bg-amber-100"
-              : "hover:cursor-pointer hover:bg-amber-300 "
-          }
-        >
-          Italic
-        </button>
+        <button>New button</button>
       </div>
       <div>
-        <button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          disabled={!editorState.canStrike}
-          className={
-            editorState.isStrike
-              ? "hover:cursor-pointer hover:bg-red-300 bg-amber-100"
-              : "hover:cursor-pointer hover:bg-amber-300 "
-          }
-        >
-          Strike
-        </button>
+        <button>New button</button>
       </div>
       <div>
-        <button
-          onClick={() => editor.chain().focus().setParagraph().run()}
-          className={
-            editorState.isParagraph
-              ? "hover:cursor-pointer hover:bg-red-300 bg-amber-100"
-              : "hover:cursor-pointer hover:bg-amber-300 "
-          }
-        >
-          Paragraph
-        </button>
+        <button>New button</button>
       </div>
-      <div>
-        <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={
-            editorState.isBulletList
-              ? "hover:cursor-pointer hover:bg-red-300 bg-amber-100"
-              : "hover:cursor-pointer hover:bg-red-300"
-          }
-        >
-          Bullet list
-        </button>
-      </div>
-      <div>
-        <button
-          onClick={() => editor.chain().focus().setCodeBlock().run()}
-          className={
-            editorState.isCodeBlock
-              ? "hover:cursor-pointer hover:bg-red-300 bg-amber-100"
-              : "hover:cursor-pointer hover:bg-amber-300 "
-          }
-        >
-          Code block
-        </button>
-      </div>
-      <div>
-        <button
-          onClick={() => editor.chain().focus().toggleTaskList().run()}
-          className={
-            editorState.isTaskList
-              ? "bg-amber-300 hover:bg-red-300 cursor-pointer px-2 py-1 rounded"
-              : "bg-gray-200 hover:bg-amber-300 cursor-pointer px-2 py-1 rounded"
-          }
-        >
-          Checkbox
-        </button>
-      </div>
+    
     </div>
   );
 }
