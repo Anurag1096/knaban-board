@@ -1,6 +1,6 @@
 import { useEditorState } from "@tiptap/react";
 import type { Editor } from "@tiptap/react";
-import { useState, useRef,useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 export default function MenuDropDown({
   editor,
   MenuRef,
@@ -46,36 +46,40 @@ export default function MenuDropDown({
     },
   });
   const EditPos = useRef<HTMLDivElement | null>(null);
-  const [divHeight,setDivHeight]=useState({top:0,left:0})
- 
-  useEffect(()=>{
-    if(!EditPos.current) return
+  const subMenue = useRef<HTMLDivElement | null>(null);
+  const [divHeight, setDivHeight] = useState({ top: 0, left: 0 });
+
+  useEffect(() => {
+    if (!EditPos.current) return;
     const rect = EditPos.current.getBoundingClientRect();
-    setDivHeight({top:rect.top,left:rect.right})
-    
-  },[EditPos])
+    setDivHeight({ top: rect.top, left: rect.right });
+  }, [EditPos]);
 
-
-  useEffect(()=>{
-    if(!secondMenu) return
-    if(!EditPos.current) return
-
-    const rect = EditPos.current?.getBoundingClientRect()
-    let x=rect.width
-    let y=rect.height
-    if(x+rect.width > window.innerWidth){
-      x=window.innerWidth - x-8
+  useEffect(() => {
+    if (!secondMenu) return;
+    if (!MenuRef.current) return;
+    if (!subMenue.current) return;
+    if (!EditPos.current) return;
+    const subRect = subMenue.current.getBoundingClientRect();
+    const parentRect = MenuRef.current.getBoundingClientRect();
+    const subButton = EditPos.current?.getBoundingClientRect();
+    let top = divHeight.top;
+    let left = parentRect.right; 
+    if (parentRect.right + subRect.width > window.innerWidth) {
+      left = parentRect.left - subRect.width;
     }
-    if(y  > window.innerHeight ){
-      y=window.innerHeight - y-8
+    if (parentRect.top + subRect.height > window.innerHeight) {
+      top = subButton.bottom - subRect.height;
     }
-  x = Math.max(8, x);
-  y = Math.max(8, y);
+    left = Math.max(8, left);
+    top = Math.max(8, top);
 
- if (x !== divHeight.top || y !== divHeight.left) {
-    setDivHeight((prev) => ({ ...prev, top:x, left:y }));
-  }
-  },[secondMenu])
+    setDivHeight((prev) => {
+      if (prev.top === top && prev.left === left) return prev;
+      return { ...prev, top, left };
+    });
+  }, [secondMenu]);
+
   return (
     <div
       ref={MenuRef}
@@ -85,8 +89,13 @@ export default function MenuDropDown({
     >
       {secondMenu && (
         <div
-          style={{ position: "fixed", top: divHeight.top, left:divHeight.left }}
-          className="bg-white border shadow-md p-2 rounded"
+          ref={subMenue}
+          style={{
+            position: "fixed",
+            top: divHeight.top,
+            left: divHeight.left,
+          }}
+          className="bg-white border shadow-md p-2 absolute rounded"
           onMouseDown={(e) => e.stopPropagation()}
         >
           {/* Start of second menu */}
@@ -192,7 +201,7 @@ export default function MenuDropDown({
       <div>
         <button>New button</button>
       </div>
-        <div ref={EditPos}>
+      <div ref={EditPos}>
         <button
           onClick={handleSecMenu}
           className={
@@ -211,7 +220,6 @@ export default function MenuDropDown({
       <div>
         <button>New button</button>
       </div>
-    
     </div>
   );
 }

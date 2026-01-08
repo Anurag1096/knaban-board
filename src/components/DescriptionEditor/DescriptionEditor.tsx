@@ -103,7 +103,7 @@ useEffect(() => {
   if (!menuRef.current) return;
 
   const rect = menuRef.current.getBoundingClientRect();
- console.log(rect)
+
   let x = menu.x;
   let y = menu.y;
 
