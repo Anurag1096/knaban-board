@@ -35,9 +35,9 @@ export default function DescriptionEditor({
   const editorRef = useRef<HTMLDivElement | null>(null);
   const [menu, setMenu] = useState({ x: 0, y: 0, visible: false });
   const menuRef = useRef<HTMLDivElement | null>(null);
-  const [secondMenu,setSecMenu]=useState(false)
-  function handlesecMenu(){
-    setSecMenu(!secondMenu)
+  const [secondMenu, setSecMenu] = useState(false);
+  function handlesecMenu() {
+    setSecMenu(!secondMenu);
   }
 
   const editor = useEditor({
@@ -81,12 +81,14 @@ export default function DescriptionEditor({
     if (!el) return;
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault(); // prevent default browser menu
-      console.log("Right click detected!", e.clientX, e.clientY);
+   
+      let x = e.clientX;
+      let y = e.clientY;
+    
 
       // You can now open a custom menu at e.clientX / e.clientY
       // showContextMenu({ x: e.clientX, y: e.clientY });
-      setMenu({ x: e.clientX, y: e.clientY, visible: true });
-      
+      setMenu({ x, y, visible: true });
     };
 
     el.addEventListener("contextmenu", handleContextMenu);
@@ -95,6 +97,32 @@ export default function DescriptionEditor({
       el.removeEventListener("contextmenu", handleContextMenu);
     };
   }, []);
+
+useEffect(() => {
+  if (!menu.visible) return;
+  if (!menuRef.current) return;
+
+  const rect = menuRef.current.getBoundingClientRect();
+ console.log(rect)
+  let x = menu.x;
+  let y = menu.y;
+
+  if (x + rect.width > window.innerWidth) {
+    x = window.innerWidth - rect.width - 8;
+  }
+
+  if (y + rect.height > window.innerHeight) {
+    y = window.innerHeight - rect.height - 8;
+  }
+
+  x = Math.max(8, x);
+  y = Math.max(8, y);
+
+  if (x !== menu.x || y !== menu.y) {
+    setMenu((prev) => ({ ...prev, x, y }));
+  }
+}, [menu.visible]);
+
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -113,11 +141,17 @@ export default function DescriptionEditor({
     <div ref={editorRef}>
       <EditorContent
         editor={editor}
-        className="border z-0 relative rounded-md p-2 bg-white dark:bg-gray-200 dark:text-black"
+        className="border z-0  rounded-md p-2 bg-white dark:bg-gray-200 dark:text-black"
       />
 
       {menu.visible && (
-        <MenuDropDown editor={editor} MenuRef={menuRef} menu={menu} secondMenu={secondMenu} handleSecMenu={handlesecMenu} />
+        <MenuDropDown
+          editor={editor}
+          MenuRef={menuRef}
+          menu={menu}
+          secondMenu={secondMenu}
+          handleSecMenu={handlesecMenu}
+        />
       )}
     </div>
   );
