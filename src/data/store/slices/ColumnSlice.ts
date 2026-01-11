@@ -117,6 +117,9 @@ const columnSlice = createSlice({
         state.splice(index, 1);
       }
     },
+    searchType:(state,action:PayloadAction<{type:string}>)=>{
+      return
+    },
     dndCard: (state, action: PayloadAction<Board[]>) => {
       //the payload will be a new object all together.. maybe?
       return action.payload;
@@ -144,6 +147,7 @@ export const {
   addColumn,
   deleteTask,
   deleteColumn,
+searchType,
   updateTask,
 } = columnSlice.actions;
 export default columnSlice.reducer;

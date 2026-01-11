@@ -3,13 +3,13 @@ import { useEffect } from "react";
 interface SearchProps {
   name: string;
   value: string;
-  placeholder: string;
+  placeholder?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 export default function SearchBar({
   name,
   value,
-  placeholder = "Search…",
+  placeholder = "Search based on Type…",
   onChange,
 }: SearchProps) {
   const id = `search_${name}`;
@@ -28,7 +28,9 @@ export default function SearchBar({
 
   return (
     <>
-      <div role="search">
+      <div role="search" 
+      className="border-amber-400 border-1  rounded-md appearance-none"
+      >
         <input
           type="search"
           id={id}
@@ -39,6 +41,7 @@ export default function SearchBar({
           aria-label="Search cards"
           autoComplete="off"
           enterKeyHint="search"
+          className="p-2"
         />
         {value && (
           <button
@@ -49,6 +52,7 @@ export default function SearchBar({
               } as React.ChangeEvent<HTMLInputElement>)
             }
             aria-label="Clear search"
+            className="cursor-pointer  appearance-none"
           >
             <Image
               src={"/close.svg"}
