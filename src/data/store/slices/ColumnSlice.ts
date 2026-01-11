@@ -5,10 +5,14 @@ import { Board } from "@/components/CreateBoard/types/BoardTypes";
 interface CreateCardProp extends CardsProps {
   columnId: string;
 }
+interface BoardState {
+  boards: Board[];
+  searchQuery: string;
+}
 
 // The initial state for every board is an empty array
-const initialState: Board[] = [
-  {
+const initialState: BoardState = {
+  boards:[{
     id: "1",
     name: "To-do",
     cards: [
@@ -67,8 +71,9 @@ const initialState: Board[] = [
     ],
 
     createdAt: 5666,
-  },
-];
+  }],
+  searchQuery:"",
+};
 
 const columnSlice = createSlice({
   name: "column",
@@ -77,7 +82,7 @@ const columnSlice = createSlice({
     addTask: (state, action: PayloadAction<CreateCardProp>) => {
       const { columnId, cardId, tagName, headings, discription } =
         action.payload;
-      const getColumn = state.find((col) => col.id === columnId);
+      const getColumn = state.boards.find((col) => col.id === columnId);
       if (getColumn) {
         getColumn.cards.push({
           cardId,
@@ -87,6 +92,7 @@ const columnSlice = createSlice({
         });
       }
     },
+
     addColumn: (
       state,
       action: PayloadAction<{
@@ -96,14 +102,14 @@ const columnSlice = createSlice({
         createdAt: number;
       }>
     ) => {
-      state.push(action.payload);
+      state.boards.push(action.payload);
     },
     deleteTask: (
       state,
       action: PayloadAction<{ columnId: string; cardId: string }>
     ) => {
       const { columnId, cardId } = action.payload;
-      const getCol = state.find((col) => col.id === columnId);
+      const getCol = state.boards.find((col) => col.id === columnId);
       if (!getCol) return;
       const index = getCol?.cards.findIndex((card) => card.cardId === cardId);
       if (index != -1) {
@@ -112,25 +118,25 @@ const columnSlice = createSlice({
     },
     deleteColumn: (state, action: PayloadAction<{ columnId: string }>) => {
       const { columnId } = action.payload;
-      const index = state.findIndex((col) => col.id === columnId);
+      const index = state.boards.findIndex((col) => col.id === columnId);
       if (index !== -1) {
-        state.splice(index, 1);
+        state.boards.splice(index, 1);
       }
     },
-    searchType:(state,action:PayloadAction<{type:string}>)=>{
-      return
-    },
-    dndCard: (state, action: PayloadAction<Board[]>) => {
+    searchType: (state, action: PayloadAction<string>) => {
+  state.searchQuery = action.payload;
+},
+    dndCard: (state, action: PayloadAction<BoardState[]>) => {
       //the payload will be a new object all together.. maybe?
       return action.payload;
     },
     emptyTask: (state) => {
-      state.length = 0;
+      state.boards.length = 0;
     },
     // need to add update task reducer
     updateTask:(state,action:PayloadAction<{columnId:string,cardId:string,title:string,discription:string}>)=>{
         const {columnId,cardId,title,discription}=action.payload
-        const getCol=state.find((col)=>col.id===columnId)
+        const getCol=state.boards.find((col)=>col.id===columnId)
         if(!getCol) return
         const changedCard=getCol.cards.find(card=>card.cardId=== cardId)
         if(!changedCard) return

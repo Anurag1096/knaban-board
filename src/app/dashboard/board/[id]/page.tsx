@@ -8,6 +8,7 @@ import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import AddTask from "@/components/AddTask/AddTaskModal";
 import NavBar from "@/components/NabBar/NabBar";
 import { usePathname } from "next/navigation";
+import { selectFilteredBoards } from "@/data/store/selector/boardSelector";
 export default function Home() {
   const pathName=usePathname()
    const [openColumnId, setOpenColumnId] = useState<string | null>(null);
@@ -19,17 +20,17 @@ export default function Home() {
   setOpenColumnId(colId);
 };
   const dispatch = useAppDispatch();
-  const BoardData = useAppSelector((state) => state.column);
+  const BoardData = useAppSelector(state=>state.column);
   function onDrag(result: DropResult<string>) {
     if (!result.destination) return;
 
     const newData = structuredClone(BoardData);
     console.log(newData);
-    const sourceColumn = newData.find(
+    const sourceColumn = newData.boards.find(
       (col) => col.id === result.source.droppableId
     );
     const draggedCard = sourceColumn?.cards[result.source.index];
-    const destinationColumn = newData.find(
+    const destinationColumn = newData.boards.find(
       (col) => col.id === result.destination?.droppableId
     );
 
@@ -49,7 +50,7 @@ export default function Home() {
     <DragDropContext onDragEnd={(result) => onDrag(result)}>
       <div className=" mt-10 grid-rows-1  md:grid grid-cols-3 md:gap-1">
         
-        {BoardData.map((columns) => {
+        {BoardData?.boards?.map((columns) => {
         
           return (
             <div

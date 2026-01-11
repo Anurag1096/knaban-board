@@ -5,19 +5,21 @@ import AddColumn from "../AddColumn/AddColumn";
 import DeletColModla from "../DeleteColumn/deleteColModal";
 import { useAppSelector } from "@/data/store/hooks";
 import SearchBar from "../SearchBar/Searchbar";
+import { useAppDispatch } from "@/data/store/hooks";
+import { searchType } from "@/data/store/slices/ColumnSlice";
 interface Props{
     boardName:string;
 }
 
 export default function NavBar({boardName}:Props){
-
+     const dispatch = useAppDispatch()
     const [searchVal,setSearchVal] = useState<string>("")
     const [isOpen,setIsOpen]=useState<boolean>(false)
     const [isCollModalOpen,setIsCMO]=useState<boolean>(false)
     function handleSearchVal(e:React.ChangeEvent<HTMLInputElement>){
          const {value}=e.target
          setSearchVal(value)
-         
+         dispatch(searchType(searchVal))      
     }
     const handleModalClose=()=>{
         setIsOpen(!isOpen)
@@ -27,7 +29,7 @@ export default function NavBar({boardName}:Props){
     }
     const colls=useAppSelector(state=>state.column)
     return(<>
-    <DeletColModla openColModal={isCollModalOpen} closeColModal={handleIsCMO} columns={colls} />
+    <DeletColModla openColModal={isCollModalOpen} closeColModal={handleIsCMO} columns={colls.boards} />
         <AddColumn isOpen={isOpen} onClose={handleModalClose}/>
     <nav className="p-2 w-full h-7 md:flex justify-between items-center ">
         <div>Kanban Board name {boardName}</div>
