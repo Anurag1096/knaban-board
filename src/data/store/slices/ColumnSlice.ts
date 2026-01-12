@@ -148,7 +148,7 @@ const columnSlice = createSlice({
     }
   },
 });
-
+export const columnReducer = columnSlice.reducer;
 export const {
   addTask,
   dndCard,
@@ -160,3 +160,4 @@ searchType,
   updateTask,
 } = columnSlice.actions;
 export default columnSlice.reducer;
+
