@@ -7,8 +7,9 @@ import { CardsProps } from "../Cards/types";
 interface BoardViewProps {
   cards: CardsProps[];
   columnsId: string;
+  disableDrag:boolean;
 }
-export default function BoardView({ cards,columnsId }:BoardViewProps) { 
+export default function BoardView({ cards,columnsId ,disableDrag}:BoardViewProps) { 
  
   return (
 
@@ -19,6 +20,7 @@ export default function BoardView({ cards,columnsId }:BoardViewProps) {
           key={card.cardId}
           draggableId={card.cardId}
           index={index}
+           isDragDisabled={disableDrag}
         >
           {(provided) => (
             <div

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { use, useState } from "react";
 import ColumnName from "@/components/ColumnName/ColumnName";
 import BoardView from "@/components/CreateBoard/BoardView";
 import { useAppSelector, useAppDispatch } from "@/data/store/hooks";
@@ -20,17 +20,22 @@ export default function Home() {
   setOpenColumnId(colId);
 };
   const dispatch = useAppDispatch();
-  const BoardData = useAppSelector(state=>state.column);
+  // const BoardData = useAppSelector(state=>state.column);
+  const boards = useAppSelector(state => state.column.boards); 
+    const searchQuery = useAppSelector(state => state.column.searchQuery);
+  const BoardData= useAppSelector(selectFilteredBoards)
+  
+ 
   function onDrag(result: DropResult<string>) {
     if (!result.destination) return;
-
-    const newData = structuredClone(BoardData);
+if (searchQuery.trim()) return;
+    const newData = structuredClone(boards);
     console.log(newData);
-    const sourceColumn = newData.boards.find(
+    const sourceColumn = newData.find(
       (col) => col.id === result.source.droppableId
     );
     const draggedCard = sourceColumn?.cards[result.source.index];
-    const destinationColumn = newData.boards.find(
+    const destinationColumn = newData.find(
       (col) => col.id === result.destination?.droppableId
     );
 
@@ -50,7 +55,7 @@ export default function Home() {
     <DragDropContext onDragEnd={(result) => onDrag(result)}>
       <div className=" mt-10 grid-rows-1  md:grid grid-cols-3 md:gap-1">
         
-        {BoardData?.boards?.map((columns) => {
+        {BoardData?.map((columns) => {
         
           return (
             <div
@@ -76,7 +81,9 @@ export default function Home() {
                     {...provided.droppableProps}
                     className="flex flex-col gap-8 p-2"
                   >
-                    <BoardView cards={columns.cards} columnsId={columns.id} />
+                    <BoardView cards={columns.cards} columnsId={columns.id}
+                    disableDrag={!!searchQuery.trim()}
+                    />
                     {provided.placeholder}
                   </div>
                 )}

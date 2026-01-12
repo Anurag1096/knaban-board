@@ -1,17 +1,22 @@
-// store/selectors/boardSelectors.ts
-import { RootState } from "../index";
+import { RootState } from "..";
+import { Board } from "@/components/CreateBoard/types/BoardTypes";
 
-export const selectFilteredBoards = (state: RootState) => {
-const q = (state.column.searchQuery || "").toLowerCase();
+export const selectFilteredBoards = (state: RootState): Board[] => {
+  const q = (state.column.searchQuery ?? "").trim().toLowerCase();
+  const boards = state.column.boards ?? [];
 
-  if (!state.column.boards) return []; // <--- fallback if boards is undefined
+  return boards.map(board => {
+    const cards = board.cards ?? [];
 
-  if (!q) return state.column.boards;
+    if (!q) {
+      return { ...board, cards: [...cards] };
+    }
 
-  return state.column.boards.map(board => ({
-    ...board,
-    cards: board.cards.filter(card =>
-      card.tagName.toLowerCase().includes(q)
-    ),
-  }));
+    return {
+      ...board,
+      cards: cards.filter(card =>
+        card.tagName?.toLowerCase().includes(q)
+      ),
+    };
+  });
 };

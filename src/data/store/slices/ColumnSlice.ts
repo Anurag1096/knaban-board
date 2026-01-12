@@ -126,9 +126,12 @@ const columnSlice = createSlice({
     searchType: (state, action: PayloadAction<string>) => {
   state.searchQuery = action.payload;
 },
-    dndCard: (state, action: PayloadAction<BoardState[]>) => {
+    dndCard: (state, action: PayloadAction<Board[]>) => {
       //the payload will be a new object all together.. maybe?
-      return action.payload;
+     state.boards = action.payload.map(b => ({
+    ...b,
+    cards: [...b.cards],
+  }));
     },
     emptyTask: (state) => {
       state.boards.length = 0;
