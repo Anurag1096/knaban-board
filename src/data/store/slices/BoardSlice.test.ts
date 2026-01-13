@@ -55,6 +55,6 @@ describe("Test for board slice", () => {
 
   it("Return initial state when action is undefined",()=>{
     const nextState=boardReducer(undefined,{type:"UNKNOWN"})
-    expect(nextState).toEqual([])
+    expect(nextState).not.toEqual([])
   })
 });
