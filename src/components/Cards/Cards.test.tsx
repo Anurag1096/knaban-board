@@ -15,10 +15,12 @@ describe("Cards component", () => {
 
     renderWithProviders(<Cards {...props} />)
 
-    // Assert visible content
+    // Assert visible contents
      expect(screen.getByText("Important")).to.exist
   expect(screen.getByText("Design")).to.exist
  
   expect(screen.getByText("some text about design")).to.exist
   })
+
+  
 })
