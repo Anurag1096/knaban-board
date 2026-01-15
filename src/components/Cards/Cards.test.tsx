@@ -13,7 +13,19 @@ describe("Cards component", () => {
       columnId: "1",
     }
 
-    renderWithProviders(<Cards {...props} />)
+    renderWithProviders(<Cards {...props} />,{
+      preloadedState:{
+        boards: {
+        boards: [
+          {
+            id: "1",
+            name: "To do",
+            cards: [{ cardId: "01", headings: "Design" }],
+          },
+        ],
+      },
+      }
+    })
 
     // Assert visible contents
      expect(screen.getByText("Important")).to.exist

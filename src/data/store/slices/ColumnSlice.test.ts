@@ -6,9 +6,11 @@ import {
   deleteTask,
   addTask,
   addColumn,
+  searchType
 } from "./ColumnSlice";
 import { CardsProps } from "@/components/Cards/types";
 import { describe, it, expect } from "vitest";
+import { combineReducers } from "@reduxjs/toolkit";
 //Pre Arrange
 const initialState = {
   boards: [
@@ -115,4 +117,10 @@ describe("columnslice Test's", () => {
     // Assert – original state untouched
     expect(initialState.boards[0].cards.length).toBe(1);
   });
+
+
+  it("updates searchQuery param in the state",()=>{
+       const newState=columnReducer(initialState,searchType("newSearch"))
+      expect(newState.searchQuery).toBe("newSearch")
+  })
 });
