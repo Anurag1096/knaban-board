@@ -1,5 +1,15 @@
-import { columnReducer, dndCard, updateTask,deleteTask } from "./ColumnSlice";
+import next from "next";
+import {
+  columnReducer,
+  dndCard,
+  updateTask,
+  deleteTask,
+  addTask,
+  addColumn,
+} from "./ColumnSlice";
+import { CardsProps } from "@/components/Cards/types";
 import { describe, it, expect } from "vitest";
+//Pre Arrange
 const initialState = {
   boards: [
     {
@@ -18,12 +28,43 @@ const initialState = {
   ],
   searchQuery: "bug",
 };
-describe("columnslice", () => {
+describe("columnslice Test's", () => {
+  it("Adds task when addTask reducer is called", () => {
+    //initial state length should increase by 1
+    //Act
+    const addTaskObj = {
+      columnId: "1",
+      cardId: "04",
+      tagName: "Important",
+      headings: "new heading",
+      discription: "some dis",
+    };
+    const nextState = columnReducer(initialState, addTask(addTaskObj));
+    const cardsState = nextState.boards[0].cards;
+    const cardPresent = cardsState.some((card) => card.cardId === "04");
+    //Assert
+
+    expect(cardsState).toHaveLength(2);
+    expect(cardPresent).toBe(true);
+  });
+  it("Adds column when addColumn reducer is called", () => {
+    const columnProps = {
+      id: "05",
+      name: "New column",
+      cards: [],
+      createdAt: 18888272,
+    };
+
+    const nextState = columnReducer(initialState, addColumn(columnProps));
+    expect(nextState).not.toBe(initialState);
+    expect(nextState.boards).toHaveLength(2);
+  });
+
   it("does not wipe search query while dragging", () => {
     const nextState = columnReducer(
       initialState,
 
-      dndCard([{ id: "1", cards: [] }])
+      dndCard([{ name:"", createdAt:12344455,id: "1", cards: [] }])
     );
 
     expect(nextState.searchQuery).toBe("bug");
@@ -53,26 +94,25 @@ describe("columnslice", () => {
   });
 
   it("Deletes the specified card", () => {
- 
-   const deleteSpecified = {
-    columnId: "1",
-    cardId: "01",
-  };
- 
+    const deleteSpecified = {
+      columnId: "1",
+      cardId: "01",
+    };
+
     // Act
-  const newState = columnReducer(
-    initialState,
-    deleteTask(deleteSpecified)
-  );
+    const newState = columnReducer(initialState, deleteTask(deleteSpecified));
 
     // Assert – immutability
-  expect(newState).not.toBe(initialState);
-  expect(newState.boards).not.toBe(initialState.boards);
+    expect(newState).not.toBe(initialState);
+    expect(newState.boards).not.toBe(initialState.boards);
 
-  // Assert – card removed
-  expect(newState.boards[0].cards.length).toBe(0);
+    const cardExists = newState.boards[0].cards.some(
+      (card) => card.cardId === "01"
+    );
 
-  // Assert – original state untouched
-  expect(initialState.boards[0].cards.length).toBe(1);
+    expect(cardExists).toBe(false);
+
+    // Assert – original state untouched
+    expect(initialState.boards[0].cards.length).toBe(1);
   });
 });
