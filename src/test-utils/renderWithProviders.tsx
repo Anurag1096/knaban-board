@@ -17,8 +17,8 @@ export function renderWithProviders(
 ) {
   const store = configureStore({
     reducer: {
-      boards: boardReducer,
-      columns: columnReducer,
+      board: boardReducer,
+      column: columnReducer,
     },
     preloadedState,
   });

@@ -21,6 +21,7 @@ export default function DashboardPage() {
   };
   return (
     <>
+    {/* Add board is a modal */}
       <AddBoard
         isOpen={open}
         onClose={handleAddBoardModal}
