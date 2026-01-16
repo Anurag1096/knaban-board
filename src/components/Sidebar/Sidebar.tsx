@@ -21,6 +21,7 @@ export default function Sidebar() {
             <Link
               className={isActive ? ` text-amber-400 text-center scale-125 py-2 hover:bg-amber-100 hover:rounded-xl` : ` text-blue-400 text-center py-0.5 hover:bg-amber-100 hover:rounded-xl`}
               key={link.Name}
+              
               href={link.href}
             >
               {link.Name}

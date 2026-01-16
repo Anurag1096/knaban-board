@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/vitest";
-
 import { vi } from "vitest";
 
+/* ---------------- matchMedia ---------------- */
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({
@@ -13,13 +13,19 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: vi.fn(),
   })),
 });
-vi.mock("next/navigation",()=>({
-useRouter:()=>({
-    push:vi.fn(),
-    replace:vi.fn(),
-    back:vi.fn(),
-    prefetch:vi.fn()
-}),
-usePathname:()=>"/",
-useSearchParams:()=>new URLSearchParams(),
-}))
+
+/* ---------------- router mocks ---------------- */
+export const pushMock = vi.fn();
+export const replaceMock = vi.fn();
+export const backMock = vi.fn();
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: pushMock,
+    replace: replaceMock,
+    back: backMock,
+    prefetch: vi.fn(),
+  }),
+  usePathname: () => "/",
+  useSearchParams: () => new URLSearchParams(),
+}));
